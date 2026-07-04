@@ -1,4 +1,36 @@
 <?php
+
+
+<?php
+include 'connection.php';
+
+$message = "";
+
+if (isset($_POST['book'])) {
+    // Prepare and bind
+    $stmt = $conn->prepare("INSERT INTO appointments (fullname, email, phone, doctor, department, app_date, app_time, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssss", $fullname, $email, $phone, $doctor, $department, $date, $time, $notes);
+
+    // Set parameters and execute
+    $fullname = $_POST['fullname'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $doctor = $_POST['doctor'];
+    $department = $_POST['department'];
+    $date = $_POST['date'];
+    $time = $_POST['time'];
+    $notes = $_POST['notes'];
+
+    if ($stmt->execute()) {
+        $message = "Your appointment has been booked successfully!";
+    } else {
+        $message = "Error: " . $stmt->error;
+    }
+    $stmt->close();
+}
+?>
+
+
 $message="";
 
 if(isset($_POST['book'])){
@@ -11,7 +43,7 @@ if(isset($_POST['book'])){
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Doctor Appointment Booking</title>
+<title>Doctor Appointment Booking</title> 
 
 <style>
 
